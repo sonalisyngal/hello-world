@@ -1,0 +1,160 @@
+---
+title: "Exercises"
+author: ''
+date: ''
+output:
+  pdf_document: default
+  html_document: default
+subtitle: Week 2
+---
+
+```{r}
+knitr::opts_chunk$set((echo = TRUE))
+knitr::opts_chunk$set((eval= TRUE))
+```
+
+
+## Exercise 1: Expected values
+
+
+1. The code below creates a sample of integer. Calculate the mean, and the variance for this distribution.
+What happens if you modify the code to increase the number of samples?
+
+```{r}
+set.seed(16092016)
+spl <- sample(0:100, size = 100, replace = TRUE)
+# Put your code in here
+mean = mean(spl)
+variance = var(spl)
+```
+
+
+## Exercise 2: Movie going in France
+
+Open the `market.RData` file. This dataset record information about the French movie market. There are 5 variables.
+
+|Variable|Description|
+|:-------|:----------|
+|`year`  |Year of record|
+|`screenings`|Number of screenings taking place in the country on that year|
+|`tickets`|Number of tickets sold in the country on that year|
+|`revenues`|Global revenue from moviegoing for this year|
+
+The revenues have already been adjusted for inflation
+
+- Calculate the average revenue per ticket for each year on record.
+- Plot the average revenue per ticket over the time period.
+- Calculate the growth in the number of ticket sold from each year to the next.
+- Describe how revenue and tickets numbers have changed over the period.
+- Does the number of screening increase or decrease? Did it increase faster or slower than the number of ticket sold? What can you conclude?
+
+```{r}
+#load("./data/market.RData"")
+md <- load('market.RData') #Loading RData file
+
+# Calculate the average revenue per ticket for each year on record.
+market = mutate(market, AverageRevenue = revenues/tickets)
+
+#Plot the average revenue per ticket over the time period.
+library(ggplot2)
+l <- ggplot(market, aes(x = year, y = AverageRevenue)) + geom_point(color ='blue') + geom_line() + ylab("Average Revenue") +ggtitle("Average Revenue per ticket")+ scale_x_continuous(name = "Year", breaks= c(1980,1985,1990,1995,2000,2005,2010,2015)) #This will give a scale with breaks in years of 5. If you wanted to call each of these breaks something else, you can add a function called labels = c(a,b,c etc) inside the scale_x_continuos function
+l
+
+#Calculate the growth in the number of ticket sold from each year to the next.
+market <- mutate(market, TicketGrowth = 0)
+
+for (i in 1:35){
+  if(i > 1){
+    market$TicketGrowth[i] = (market$tickets[i]-market$tickets[i-1])/(market$tickets[i])
+  }  
+}
+head(market)  
+    
+
+# Describe how revenue and tickets numbers have changed over the period.
+p <- ggplot(market, aes(x= year)) + geom_line(aes(y = tickets,colour='Ticket')) + geom_line(aes(y=revenues, colour='Revenue')) + scale_x_continuous(name = "Year", breaks= c(1980,1985,1990,1995,2000,2005,2010,2015)) + scale_y_continuous(name= 'Revenue/ Ticket',labels= scales::comma)+ggtitle("Change in Revenue and Ticket numbers over time")+scale_color_discrete(name= "Color") #Can do this - but not very clear, or can make two graphs, one for revenue and one for ticket numbers
+
+#Does the number of screening increase or decrease? Did it increase faster or slower than the number of ticket sold? What can you conclude?
+library(ggplot2)
+s <- ggplot(market, aes(x= year, y= screenings))+ geom_line() + scale_y_continuous(labels = scales::comma) + ggtitle("Screenings over the years")
+s
+t <- ggplot(market, aes(x= year, y= tickets))+ geom_line() + scale_y_continuous(labels = scales::comma)+ggtitle("Tickets sold over the years")
+t
+
+#How to compare if it grew faster or slower?
+
+# Put your code in here
+
+```
+
+
+## Exercise 3: Political Attitudes in the UK
+
+1. How does the proportion of people surveyed who would vote labour if there was a general election tomorrow evolves over time?
+
+
+```{r}
+# Put your code in here
+pa <- read.delim('audit_of_political_engagement_1-10_data.tab')
+
+
+```
+
+
+2. What is the gender distribution of conservatives supporters in the population surveyed?
+
+
+```{r}
+# Put your code in here
+
+```
+
+
+3. How does the gender distribution of conservatives supporters in the population surveyed change in the different waves of the study?
+
+
+```{r}
+# Put your code in here
+
+```
+
+
+4. What is the average revenue of households who support Labour? What about the average revenue of households who support the Conservatives? How does the average revenue of supporters of both parties change over time?
+
+
+```{r}
+# Put your code in here
+
+```
+
+
+5. How does the likelihood to vote in an election changed over time (q3)?
+
+```{r}
+# Put your code in here
+
+```
+
+6. Does having voted in the last local council election (q5_1) change your likelihood to vote in the general election? Does that relationship change over time (try to come up with an informative graph)?
+
+```{r}
+# Put your code in here
+
+```
+
+7. Is there differences in the distribution of voting intentions across the different region of the UK (gor)?
+
+```{r}
+# Put your code in here
+
+```
+
+8. Does age (age and exage) seem to change indiviuals political opinion?
+
+```{r}
+# Put your code in here
+
+```
+
+
+

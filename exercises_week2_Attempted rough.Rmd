@@ -1,0 +1,152 @@
+---
+title: "Exercises"
+author: 'Sonali Syngal'
+date: '14-09-2017'
+output:
+  pdf_document: default
+  html_document: default
+subtitle: Week 2
+---
+
+## Exercise 1: Expected values
+
+
+1. The code below creates a sample of integer. Calculate the mean, and the variance for this distribution.
+What happens if you modify the code to increase the number of samples?
+
+```{r}
+set.seed(16092016)
+spl <- sample(0:100, size = 100, replace = TRUE)
+# Put your code in here
+mean(spl)
+var(spl)
+
+#Modified Code:
+spl_mod <- sample(1:100, size = 1000, replace = TRUE)
+mean(spl_mod)
+var(spl_mod)
+
+#Value of mean becomes closer to 50, and variance closer to theoretical variance
+```
+
+
+## Exercise 2: Movie going in France
+
+Open the `market.RData` file. This dataset record information about the French movie market. There are 5 variables.
+
+|Variable|Description|
+|:-------|:----------|
+|`year`  |Year of record|
+|`screenings`|Number of screenings taking place in the country on that year|
+|`tickets`|Number of tickets sold in the country on that year|
+|`revenues`|Global revenue from moviegoing for this year|
+
+The revenues have already been adjusted for inflation
+
+- Calculate the average revenue per ticket for each year on record.
+- Plot the average revenue per ticket over the time period.
+- Calculate the growth in the number of ticket sold from each year to the next.
+- Describe how revenue and tickets numbers have changed over the period.
+- Does the number of screening increase or decrease? Did it increase faster or slower than the number of ticket sold? What can you conclude?
+
+```{r}
+#load("./data/market.RData"")
+md <- load("market.RData")
+# Put your code in here
+
+#Question 1: Calculate the average revenue per ticket for each year on record. 
+df_ar = data.frame()
+
+for (i in 1:35){
+  Average_revenue <- market$revenues[i]/market$tickets[i]
+  df_ar= rbind(df_ar, c(market$year[i], Average_revenue))
+}
+
+#Question 2: Plot the average revenue per ticket over the time period
+library(ggplot2)
+a <- ggplot(df_ar, aes(x=df_ar[1] , y=df_ar[2]))
+a + geom_point()
+
+#Question 3: Calculate the growth in the number of ticket sold from each year to the next.
+market$Growth <- (0)
+for (i in 2:35){
+  market$Growth[i] = (market$tickets[i]-market$tickets[i-1])/(market$tickets[i-1])
+}
+
+# Question 4: Describe how revenue and tickets numbers have changed over the period.
+ggplot(data = market, aes(x= market$year)) + geom_line(aes(y= market$revenues, colour = "var01")) + geom_line( aes(y= market$tickets, colour = "var02"))
+
+#Question 5: Does the number of screening increase or decrease? Did it increase faster or slower than the number of ticket sold? What can you conclude?
+
+
+```
+
+
+## Exercise 3: Political Attitudes in the UK
+
+1. How does the proportion of people surveyed who would vote labour if there was a general election tomorrow evolves over time?
+
+
+```{r}
+# Put your code in here
+
+```
+
+
+2. What is the gender distribution of conservatives supporters in the population surveyed?
+
+
+```{r}
+# Put your code in here
+
+```
+
+
+3. How does the gender distribution of conservatives supporters in the population surveyed change in the different waves of the study?
+
+
+```{r}
+# Put your code in here
+
+```
+
+
+4. What is the average revenue of households who support Labour? What about the average revenue of households who support the Conservatives? How does the average revenue of supporters of both parties change over time?
+
+
+```{r}
+# Put your code in here
+
+```
+
+
+5. How does the likelihood to vote in an election changed over time (q3)?
+
+```{r}
+# Put your code in here
+
+```
+
+6. Does having voted in the last local council election (q5_1) change your likelihood to vote in the general election? Does that relationship change over time (try to come up with an informative graph)?
+
+```{r}
+# Put your code in here
+
+```
+
+7. Is there differences in the distribution of voting intentions across the different region of the UK (gor)?
+
+```{r}
+# Put your code in here
+
+```
+
+8. Does age (age and exage) seem to change indiviuals political opinion?
+
+```{r}
+# Put your code in here
+
+```
+
+
+
